@@ -5,10 +5,11 @@
 #
 class jdk_oracle(
     $version      = hiera('jdk_oracle::version', '7' ),
-    $arch      = hiera('jdk_oracle::arch', 'x64' ),
+    $arch         = hiera('jdk_oracle::arch', 'x64' ),
     $install_dir  = hiera('jdk_oracle::install_dir', '/usr/java' ),
-    $tmp_dir  = hiera('jdk_oracle::tmp_dir', '/tmp' ),
+    $tmp_dir      = hiera('jdk_oracle::tmp_dir', '/tmp' ),
     $use_cache    = hiera('jdk_oracle::use_cache',   false ),
+    $cache_source = 'puppet:///modules/jdk_oracle/',
     ) {
 
     # Set default exec path for this module
@@ -36,7 +37,7 @@ class jdk_oracle(
     if ( $use_cache ){
         notify { 'Using local cache for oracle java': }
         file { "${tmp_dir}/${installerFilename}":
-            source  => "puppet:///modules/jdk_oracle/${installerFilename}",
+            source  => "${cache_source}${installerFilename}",
         }
         exec { 'get_jdk_installer':
             cwd     => $tmp_dir,
